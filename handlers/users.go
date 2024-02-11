@@ -3,6 +3,7 @@ package users
 import (
 	"net/http"
 	user "note_api/models"
+	utils "note_api/utils"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -61,6 +62,7 @@ func LoginUsers(ctx *gin.Context) {
 		return
 	}
 
+	//Compare hashed password with entered password..
 	err := bcrypt.CompareHashAndPassword([]byte(userFound.Password), []byte(loginUser.Password))
 
 	if err != nil {
@@ -68,6 +70,15 @@ func LoginUsers(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, "OK")
+	//Generate a JWT
+	jwtToken, err := utils.GenerateJWT(utils.UserData{ID: userFound.ID, Username: userFound.Username})
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, "Unable to generate JWT")
+		return
+	}
+
+	//Send JWT back to user..
+	ctx.JSON(http.StatusOK, gin.H{"jwtToken": jwtToken})
 
 }
