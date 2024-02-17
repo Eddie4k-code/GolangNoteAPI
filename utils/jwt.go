@@ -4,11 +4,12 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // Shape of data that will be returned back to client once a JWT is generated.
 type UserData struct {
-	ID       int
+	ID       primitive.ObjectID
 	Username string
 }
 

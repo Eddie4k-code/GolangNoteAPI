@@ -5,13 +5,14 @@ import (
 	db "note_api/db"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 /* Data Shape of a User */
 type User struct {
-	ID       int    `json:"id,omitempty" bson:"_id,omitempty"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	ID       primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	Username string             `json:"username"`
+	Password string             `json:"password"`
 }
 
 // Temporary collection of users will use database to store these.
