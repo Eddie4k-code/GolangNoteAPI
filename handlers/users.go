@@ -11,7 +11,15 @@ import (
 
 /* Retrieve all Users */
 func GetUsers(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, user.Users)
+
+	users, err := user.GetAllUsers()
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, users)
 }
 
 /* Register a User */
@@ -35,13 +43,22 @@ func PostUsers(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	newUser = user.User{Username: newUser.Username, Password: string(hashedPassword)}
 
 	newUser.CreateUser()
 
-	ctx.JSON(http.StatusCreated, newUser)
+	//Generate Token
+	jwtToken, err := utils.GenerateJWT(utils.UserData{ID: newUser.ID, Username: newUser.Username})
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Unable to generate JWT."})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"jwtToken": jwtToken})
 
 }
 
