@@ -99,3 +99,7 @@ func LoginUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"jwtToken": jwtToken})
 
 }
+
+func CheckAuthenticationTest(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{"message": "Authenticated"})
+}

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -33,4 +34,24 @@ func GenerateJWT(userData UserData) (string, error) {
 
 	return tokenString, nil
 
+}
+
+/* Used to verify a json web token */
+func VerifyJwt(tokenString string) (*jwt.Token, error) {
+
+	keyFunc := func(token *jwt.Token) (interface{}, error) {
+		return []byte("SecretYouShouldHide"), nil
+	}
+
+	token, err := jwt.Parse(tokenString, keyFunc)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !token.Valid {
+		return nil, fmt.Errorf("invalid token")
+	}
+
+	return token, nil
 }
