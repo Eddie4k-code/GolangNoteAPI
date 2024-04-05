@@ -1,0 +1,18 @@
+# Ignore common build directories and files
+.git
+.github
+.vscode
+.idea
+.DS_Store
+*.log
+*.bak
+*.tmp
+*.swp
+
+# Ignore local development files
+node_modules
+*.env
+
+# Ignore files generated during the build process
+Dockerfile.*
+docker-compose.*

@@ -1,8 +1,8 @@
-package users
+package handlers
 
 import (
 	"net/http"
-	user "note_api/models"
+	models "note_api/models"
 	utils "note_api/utils"
 
 	"github.com/gin-gonic/gin"
@@ -12,7 +12,7 @@ import (
 /* Retrieve all Users */
 func GetUsers(ctx *gin.Context) {
 
-	users, err := user.GetAllUsers()
+	users, err := models.GetAllUsers()
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -25,7 +25,7 @@ func GetUsers(ctx *gin.Context) {
 /* Register a User */
 func PostUsers(ctx *gin.Context) {
 
-	var newUser user.User
+	var newUser models.User
 
 	if err := ctx.ShouldBindJSON(&newUser); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -46,7 +46,7 @@ func PostUsers(ctx *gin.Context) {
 		return
 	}
 
-	newUser = user.User{Username: newUser.Username, Password: string(hashedPassword)}
+	newUser = models.User{Username: newUser.Username, Password: string(hashedPassword)}
 
 	newUser.CreateUser()
 
@@ -65,14 +65,14 @@ func PostUsers(ctx *gin.Context) {
 /* Login a User */
 func LoginUsers(ctx *gin.Context) {
 
-	var loginUser user.User
+	var loginUser models.User
 
 	if err := ctx.ShouldBindJSON(&loginUser); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	userFound := user.FindUser(loginUser)
+	userFound := models.FindUser(loginUser)
 
 	if userFound == nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "User Does not Exist!"})
