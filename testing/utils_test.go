@@ -1,27 +1,30 @@
 package main
 
 import (
-	"note_api/utils"
 	"testing"
 
 	"github.com/golang-jwt/jwt/v4"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestGenerateJWT(t *testing.T) {
 
-	id := primitive.NewObjectID()
+	//id := primitive.NewObjectID()
 
-	mockUserData := utils.UserData{
-		ID:       id,
-		Username: "username_Test_123",
-	}
+	/*
+		mockUserData := utils.UserData{
+			ID:       id,
+			Username: "username_Test_123",
+		}
+	*/
 
-	token, err := utils.GenerateJWT(mockUserData)
+	//token, err := utils.GenerateJWT(mockUserData)
 
-	if err != nil {
+	token := ""
+
+	/*if err != nil {
 		t.Error(err.Error())
 	}
+	*/
 
 	if len(token) == 0 || token == "" {
 		t.Error("Token should not be empty")
