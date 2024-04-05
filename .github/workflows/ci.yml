@@ -1,5 +1,3 @@
-name: CI
-
 on: [push]
 
 jobs:
@@ -17,4 +15,7 @@ jobs:
       run: docker-compose up -d --build
 
     - name: Run tests
-      run: docker-compose exec -it api go test -v ./testing
+      run: |
+        docker-compose exec -T api go test -v ./testing
+    - name: Check test status
+      run: exit $(docker-compose exec api go test -v ./testing | grep FAIL | wc -l)
